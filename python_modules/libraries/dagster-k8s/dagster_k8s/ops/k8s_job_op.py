@@ -3,6 +3,8 @@ from typing import Any, Dict, List, Optional
 
 import kubernetes.config
 import kubernetes.watch
+from urllib3.exceptions import InvalidChunkLength
+from kubernetes.client.exceptions import ApiException
 from dagster import (
     Enum as DagsterEnum,
     Field,
@@ -381,6 +383,14 @@ def execute_k8s_job(
                 try:
                     log_entry = next(log_stream)
                     print(log_entry)  # noqa: T201
+                except ApiException as e:
+                    if e.status == 410:
+                        break
+                    else:
+                        context.log.error(f"ApiException error: {str(e)}")
+                except InvalidChunkLength as e:
+                    context.log.error(f"InvalidChunkLength error: {str(e)}")
+                    break
                 except StopIteration:
                     break
         else:

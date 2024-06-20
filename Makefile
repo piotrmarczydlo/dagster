@@ -54,7 +54,7 @@ install_dev_python_modules_verbose:
 	python scripts/install_dev_python_modules.py
 
 install_dev_python_modules_verbose_m1:
-	python scripts/install_dev_python_modules.py -qqq --include-prebuilt-grpcio-wheel
+	python scripts/install_dev_python_modules.py -q --include-prebuilt-grpcio-wheel
 
 graphql:
 	cd js_modules/dagster-ui/; make generate-graphql; make generate-perms
@@ -71,11 +71,15 @@ rebuild_ui: sanity_check
 rebuild_ui_with_profiling: sanity_check
 	cd js_modules/dagster-ui/; yarn install && yarn build-with-profiling
 
-dev_install_m1_grpcio_wheel: install_dev_python_modules_verbose_m1 rebuild_ui
+dev_install_m1_grpcio_wheel: install_dev_python_modules_verbose_m1 
 
-dev_install: install_dev_python_modules_verbose rebuild_ui
+# rebuild_ui
 
-dev_install_quiet: install_dev_python_modules rebuild_ui
+dev_install: install_dev_python_modules_verbose 
+#rebuild_ui
+
+dev_install_quiet: install_dev_python_modules 
+#rebuild_ui
 
 graphql_tests:
 	pytest python_modules/dagster-graphql/dagster_graphql_tests/graphql/ -s -vv
