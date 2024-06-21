@@ -385,12 +385,11 @@ def execute_k8s_job(
                     print(log_entry)  # noqa: T201
                 except ApiException as e:
                     if e.status == 410:
-                        break
+                        raise
                     else:
-                        context.log.error(f"ApiException error: {str(e)}")
+                        context.log.warning(f"ApiException error: {e}")
                 except InvalidChunkLength as e:
-                    context.log.error(f"InvalidChunkLength error: {str(e)}")
-                    break
+                    context.log.warning(f"InvalidChunkLength error: {e}")
                 except StopIteration:
                     break
         else:

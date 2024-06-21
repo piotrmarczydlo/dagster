@@ -14,9 +14,9 @@ def get_version() -> str:
 
 ver = get_version()
 # dont pin dev installs to avoid pip dep resolver issues
-pin = "" if ver == "1!0+dev" else f"=={ver}"
+pin = "" if ver == "1!0+dev-debug-0.0.3" else f"=={ver}"
 setup(
-    name="dagster-k8s-elmo",
+    name="dagster-k8s",
     version=ver,
     author="Dagster Labs",
     author_email="hello@dagsterlabs.com",
